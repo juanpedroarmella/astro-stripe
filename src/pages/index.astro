@@ -1,10 +1,30 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Stripe from 'stripe'
+
+const stripe = new Stripe('sk_test_51NnLkcLcmksFwKNV1DAHVxww2Z5YbyEEnmVopM0sScihZGEyx3YuxeYw3YdVZUxlAT51JQL5AxxwsRwhDR03EUji00qP6Bz6Ss' ,{
+  apiVersion: '2023-08-16',
+});
+
+const createCustomer = await stripe.customers.create({
+  email: 'customer@example.com',
+});
+
+const logCustomer = await stripe.customers.retrieve(
+  createCustomer.id,
+);
+
+const connnectedAccounts = await stripe.customers.retrieve(createCustomer.id, {
+  stripeAccount: 'acct_1NnLkcLcmksFwKNV'
+});
 ---
 
 <Layout title="Stripe Test">
-	<main>
+	<main class="m-auto">
     <p class="text-white">Hola</p>
+    <p class="text-white">{JSON.stringify(createCustomer)}</p>
+    <p class="text-white">{JSON.stringify(logCustomer)}</p>
+    <p class="text-white">{JSON.stringify(connnectedAccounts)}</p>
 	</main>
 </Layout>
 
